@@ -1,21 +1,21 @@
-# CSE464_Project
-## Graph Parser
+#  CSE464_Project
+## 🔖 Description
 The Graph Parser is a Java library that allows you to read, write, and manipulate graphs represented in the Graphviz DOT format. 
 It provides methods for adding, removing, and modifying nodes and edges in a graph, as well as for reading and writing graphs to file and rendering them as images.
 
-## Introduction
+##	📄 Introduction
 This is a Java program that parses DOT files and creates a directed graph using the JGraphT library. The program has the following features:
 -   Feature 1: Parsing DOT files and creating a directed graph
 -   Feature 2: Adding and removing nodes from the graph
 -   Feature 3: Adding and removing edges between nodes in the graph
 -   Feature 4: Outputting the graph in DOT format and rendering it as an image in PNG format
 
-## Installation and Dependencies
+## 🚀 Installation and Dependencies
 The program requires Java 8 or later and the JGraphT library. The JGraphT library can be downloaded from https://jgrapht.org/ or included as a Maven dependency in your project.
 
 GitHub Link : https://github.com/Sim-ran-K/CSE464_Proj.git 
 
-## Run the program
+## 🔨 Run the program
 -   Ensure that you have Java 8 or later and Maven installed on your system.
 -   Clone the Graph Parser code from the GitHub repository: https://github.com/Sim-ran-K/CSE464_Proj.git
 -   Open a command prompt or terminal window and navigate to the directory containing the cloned code.
@@ -31,7 +31,7 @@ If you don't specify input and output file paths, the program will use input.dot
 If no output file is specified, the modified graph will be output to the console.
 
 
-## Getting Started
+## :electron:  Getting Started
 To use the Graph Parser in your Java project, you will need to add the following dependency to your pom.xml file:
 
 ```
@@ -48,13 +48,13 @@ GraphParser parser = new GraphParser();
 parser.parseGraph("example.dot");
 System.out.println(parser.toString());
 ```
-## Features
+## ⚙️ Features
 The Graph Parser provides several features for working with graphs:
 Parsing: The parseGraph method allows you to parse a graph from a file in the Graphviz DOT format.
 Outputting: The outputGraph, outputDOTGraph, and outputGraphics methods allow you to output a graph to a file in the Graphviz DOT format, as a DOT string, or as an image file (in PNG, SVG, or PDF format), respectively.
 Node and edge manipulation: The addNode, removeNode, addNodes, removeNodes, addEdge, and removeEdge methods allow you to add, remove, and modify nodes and edges in a graph.
 
-## Usage
+## 🛠️ Usage
 
 The main method of the GraphParser class can be used as an example of how to use the program. It takes two optional command-line arguments: the input file path and the output file path. If no arguments are provided, the program will use input.dot as the input file and output.dot as the output file.
 To use the program for your own DOT files, you can create a new instance of GraphParser and call its methods to manipulate the graph. The methods available are:
@@ -79,5 +79,5 @@ parser.outputGraphics("example.png", "PNG");
 ```
 This will parse the graph from the file example.dot, add a node with the label "newNode", add an edge from the node with the label "node1" to the new node, and output the modified graph as a PNG image file named example.png.
 
-## Author
+## 🌟 Author
 **Simran Kaur**
