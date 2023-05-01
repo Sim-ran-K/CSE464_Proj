@@ -24,6 +24,46 @@ import java.io.Writer;
 import java.util.Scanner;
 import java.util.Set;
 
+// Refactoring 3: Replace Conditional with Polymorphism
+// Command line file path handler implementation
+interface FilePathHandler {
+    String getInputFilePath();
+    String getOutputFilePath();
+}
+
+// Refactoring 3: Replace Conditional with Polymorphism
+// Command line file path handler implementation
+
+class DefaultFilePathHandler implements FilePathHandler {
+    public String getInputFilePath() {
+        return "input.dot";
+    }
+
+    // Refactoring 3: Replace Conditional with Polymorphism
+    // Command line file path handler implementation
+    public String getOutputFilePath() {
+        return "output.dot";
+    }
+}
+
+// Refactoring 3: Replace Conditional with Polymorphism
+// Command line file path handler implementation
+class CommandLineFilePathHandler implements FilePathHandler {
+    private String[] args;
+
+    public CommandLineFilePathHandler(String[] args) {
+        this.args = args;
+    }
+
+    public String getInputFilePath() {
+        return args[0];
+    }
+
+    public String getOutputFilePath() {
+        return args[1];
+    }
+}
+
 public class GraphParser {
     private org.jgrapht.Graph<String, DefaultEdge> graph;
 
@@ -36,7 +76,6 @@ public class GraphParser {
         importer.importGraph(this.graph, new File(filepath));
 
     }
-
 
     // Extract method refactoring
     // we can extract two separate methods to handle the vertices and edges information.
@@ -163,10 +202,14 @@ public class GraphParser {
     }
 
 
-    //Refactoring 2 : Extract Method
+
+    // Refactoring 3: Replace Conditional with Polymorphism
+    // Instantiate the appropriate file path handler based on the length of the args array
     public static void main(String[] args) throws FileNotFoundException {
-        String inFilepath = (args.length > 0) ? args[0] : "input.dot";
-        String outFilepath = (args.length > 1) ? args[1] : "output.dot";
+        FilePathHandler filePathHandler = (args.length > 1) ? new CommandLineFilePathHandler(args) : new DefaultFilePathHandler();
+
+        String inFilepath = filePathHandler.getInputFilePath();
+        String outFilepath = filePathHandler.getOutputFilePath();
 
         GraphParser parser = new GraphParser();
         parser.parseAndPrintGraph(inFilepath);
