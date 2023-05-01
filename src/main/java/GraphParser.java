@@ -63,9 +63,11 @@ class CommandLineFilePathHandler implements FilePathHandler {
         return args[1];
     }
 }
-
 public class GraphParser {
     private org.jgrapht.Graph<String, DefaultEdge> graph;
+
+    // Add the constant SCALE_FACTOR
+    private static final double SCALE_FACTOR = 2.0;
 
     public void parseGraph(String filepath) throws FileNotFoundException {
         // Create a new directed graph using the JGraphT library
@@ -76,6 +78,7 @@ public class GraphParser {
         importer.importGraph(this.graph, new File(filepath));
 
     }
+
 
     // Extract method refactoring
     // we can extract two separate methods to handle the vertices and edges information.
@@ -190,16 +193,18 @@ public class GraphParser {
     }
 
     public void outputGraphics(String filePath, String format) {
-        try{
+        try {
             mxGraphComponent component = new mxGraphComponent(new JGraphXAdapter<>(this.graph));
-            BufferedImage image = mxCellRenderer.createBufferedImage(component.getGraph(),null,2, Color.WHITE,component.isAntiAlias(),null,component.getCanvas());
-            ImageIO.write(image,format,new File(filePath));
-        }
-        catch(Exception e) {
-            System.out.println("Exception in outputGraphics :"+e);
+            //Refactoring 5: Replace Magic number with constant
+            // Use the constant SCALE_FACTOR instead of the magic number 2
+            BufferedImage image = mxCellRenderer.createBufferedImage(component.getGraph(), null, SCALE_FACTOR, Color.WHITE, component.isAntiAlias(), null, component.getCanvas());
+            ImageIO.write(image, format, new File(filePath));
+        } catch (Exception e) {
+            System.out.println("Exception in outputGraphics :" + e);
             e.printStackTrace();
         }
     }
+
 
 
 
