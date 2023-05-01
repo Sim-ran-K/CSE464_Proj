@@ -24,8 +24,50 @@ import java.io.Writer;
 import java.util.Scanner;
 import java.util.Set;
 
+// Refactoring 3: Replace Conditional with Polymorphism
+// Command line file path handler implementation
+interface FilePathHandler {
+    String getInputFilePath();
+    String getOutputFilePath();
+}
+
+// Refactoring 3: Replace Conditional with Polymorphism
+// Command line file path handler implementation
+
+class DefaultFilePathHandler implements FilePathHandler {
+    public String getInputFilePath() {
+        return "input.dot";
+    }
+
+    // Refactoring 3: Replace Conditional with Polymorphism
+    // Command line file path handler implementation
+    public String getOutputFilePath() {
+        return "output.dot";
+    }
+}
+
+// Refactoring 3: Replace Conditional with Polymorphism
+// Command line file path handler implementation
+class CommandLineFilePathHandler implements FilePathHandler {
+    private String[] args;
+
+    public CommandLineFilePathHandler(String[] args) {
+        this.args = args;
+    }
+
+    public String getInputFilePath() {
+        return args[0];
+    }
+
+    public String getOutputFilePath() {
+        return args[1];
+    }
+}
 public class GraphParser {
     private org.jgrapht.Graph<String, DefaultEdge> graph;
+
+    // Add the constant SCALE_FACTOR
+    private static final double SCALE_FACTOR = 2.0;
 
     public void parseGraph(String filepath) throws FileNotFoundException {
         // Create a new directed graph using the JGraphT library
@@ -37,12 +79,26 @@ public class GraphParser {
 
     }
 
+
+    // Extract method refactoring
+    // we can extract two separate methods to handle the vertices and edges information.
     public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getVerticesInfo());
+        sb.append(getEdgesInfo());
+        return sb.toString();
+    }
+
+    private String getVerticesInfo() {
         StringBuilder sb = new StringBuilder();
         Set<String> vertices = this.graph.vertexSet();
         sb.append("Number of nodes: ").append(vertices.size()).append("\n");
         sb.append("Nodes: ").append(vertices.toString()).append("\n");
+        return sb.toString();
+    }
 
+    private String getEdgesInfo() {
+        StringBuilder sb = new StringBuilder();
         Set<DefaultEdge> edges = this.graph.edgeSet();
         sb.append("Number of edges: ").append(edges.size()).append("\n");
         sb.append("Edges: \n");
@@ -51,7 +107,6 @@ public class GraphParser {
             String target = this.graph.getEdgeTarget(edge);
             sb.append(source).append(" -> ").append(target).append("\n");
         }
-
         return sb.toString();
     }
 
@@ -138,47 +193,61 @@ public class GraphParser {
     }
 
     public void outputGraphics(String filePath, String format) {
-        try{
+        try {
             mxGraphComponent component = new mxGraphComponent(new JGraphXAdapter<>(this.graph));
-            BufferedImage image = mxCellRenderer.createBufferedImage(component.getGraph(),null,2, Color.WHITE,component.isAntiAlias(),null,component.getCanvas());
-            ImageIO.write(image,format,new File(filePath));
-        }
-        catch(Exception e) {
-            System.out.println("Exception in outputGraphics :"+e);
+            //Refactoring 5: Replace Magic number with constant
+            // Use the constant SCALE_FACTOR instead of the magic number 2
+            BufferedImage image = mxCellRenderer.createBufferedImage(component.getGraph(), null, SCALE_FACTOR, Color.WHITE, component.isAntiAlias(), null, component.getCanvas());
+            ImageIO.write(image, format, new File(filePath));
+        } catch (Exception e) {
+            System.out.println("Exception in outputGraphics :" + e);
             e.printStackTrace();
         }
     }
 
+
+
+
+    // Refactoring 3: Replace Conditional with Polymorphism
+    // Instantiate the appropriate file path handler based on the length of the args array
     public static void main(String[] args) throws FileNotFoundException {
-        String inFilepath = "input.dot";
-        if(args.length>0) inFilepath = args[0];
+        FilePathHandler filePathHandler = (args.length > 1) ? new CommandLineFilePathHandler(args) : new DefaultFilePathHandler();
+
+        String inFilepath = filePathHandler.getInputFilePath();
+        String outFilepath = filePathHandler.getOutputFilePath();
 
         GraphParser parser = new GraphParser();
-        parser.parseGraph(inFilepath);
-
-        System.out.println(parser.toString());
-        String outFilepath = "output.dot";
-        if(args.length>1) outFilepath = args[1];
+        parser.parseAndPrintGraph(inFilepath);
         parser.outputGraph(outFilepath);
 
-
-        //Add Node
-        parser.addNode("firstSourceNode");
-        parser.addNode("firstDestNode");
-        parser.addEdge("firstSourceNode","firstDestNode");
-        System.out.println(parser.toString());
-        String updFilepath = "output_updated1.dot";
-        parser.outputGraph(updFilepath);
-        parser.removeEdge("firstSourceNode","firstDestNode");
-        parser.removeNode("firstSourceNode");
-        parser.removeNode("firstDestNode");
-        System.out.println(parser.toString());
-        String rmFilepath = "output_removed1.dot";
-        parser.outputGraph(rmFilepath);
-
-        //outputDOTGraph
-        parser.outputDOTGraph("outputDOTGraph.dot");
-        parser.outputGraphics("outputpngGraph","PNG");
-
+        parser.addAndPrintNodes();
+        parser.exportGraphs();
+        parser.removeAndPrintNodes();
+    }
+    //Refactoring 2: Extract method
+    private void parseAndPrintGraph(String filepath) throws FileNotFoundException {
+        parseGraph(filepath);
+        System.out.println(toString());
+    }
+    //Refactoring 2: Extract Method
+    private void addAndPrintNodes() {
+        addNode("firstSourceNode");
+        addNode("firstDestNode");
+        addEdge("firstSourceNode", "firstDestNode");
+        System.out.println(toString());
+    }
+    //Refactoring 2: Extract Method
+    private void removeAndPrintNodes() {
+        removeEdge("firstSourceNode", "firstDestNode");
+        removeNode("firstSourceNode");
+        removeNode("firstDestNode");
+        System.out.println(toString());
+    }
+    //Refactoring 2: Extract Method
+    private void exportGraphs() throws FileNotFoundException {
+        outputGraph("output_updated1.dot");
+        outputGraph("output_removed1.dot");
+        outputDOTGraph("outputDOTGraph.dot");
+        outputGraphics("outputpngGraph", "PNG");
     }
 }
