@@ -37,12 +37,26 @@ public class GraphParser {
 
     }
 
+
+    // Extract method refactoring
+    // we can extract two separate methods to handle the vertices and edges information.
     public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getVerticesInfo());
+        sb.append(getEdgesInfo());
+        return sb.toString();
+    }
+
+    private String getVerticesInfo() {
         StringBuilder sb = new StringBuilder();
         Set<String> vertices = this.graph.vertexSet();
         sb.append("Number of nodes: ").append(vertices.size()).append("\n");
         sb.append("Nodes: ").append(vertices.toString()).append("\n");
+        return sb.toString();
+    }
 
+    private String getEdgesInfo() {
+        StringBuilder sb = new StringBuilder();
         Set<DefaultEdge> edges = this.graph.edgeSet();
         sb.append("Number of edges: ").append(edges.size()).append("\n");
         sb.append("Edges: \n");
@@ -51,7 +65,6 @@ public class GraphParser {
             String target = this.graph.getEdgeTarget(edge);
             sb.append(source).append(" -> ").append(target).append("\n");
         }
-
         return sb.toString();
     }
 
