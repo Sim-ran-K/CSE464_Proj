@@ -1,1 +1,1 @@
-([0, 1, 2], [(0,1), (1,2), (2,0)])
+([0, 1, 2, firstSourceNode, firstDestNode], [(0,1), (1,2), (2,0), (firstSourceNode,firstDestNode)])

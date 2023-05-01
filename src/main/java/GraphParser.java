@@ -162,36 +162,44 @@ public class GraphParser {
         }
     }
 
+
+    //Refactoring 2 : Extract Method
     public static void main(String[] args) throws FileNotFoundException {
-        String inFilepath = "input.dot";
-        if(args.length>0) inFilepath = args[0];
+        String inFilepath = (args.length > 0) ? args[0] : "input.dot";
+        String outFilepath = (args.length > 1) ? args[1] : "output.dot";
 
         GraphParser parser = new GraphParser();
-        parser.parseGraph(inFilepath);
-
-        System.out.println(parser.toString());
-        String outFilepath = "output.dot";
-        if(args.length>1) outFilepath = args[1];
+        parser.parseAndPrintGraph(inFilepath);
         parser.outputGraph(outFilepath);
 
-
-        //Add Node
-        parser.addNode("firstSourceNode");
-        parser.addNode("firstDestNode");
-        parser.addEdge("firstSourceNode","firstDestNode");
-        System.out.println(parser.toString());
-        String updFilepath = "output_updated1.dot";
-        parser.outputGraph(updFilepath);
-        parser.removeEdge("firstSourceNode","firstDestNode");
-        parser.removeNode("firstSourceNode");
-        parser.removeNode("firstDestNode");
-        System.out.println(parser.toString());
-        String rmFilepath = "output_removed1.dot";
-        parser.outputGraph(rmFilepath);
-
-        //outputDOTGraph
-        parser.outputDOTGraph("outputDOTGraph.dot");
-        parser.outputGraphics("outputpngGraph","PNG");
-
+        parser.addAndPrintNodes();
+        parser.exportGraphs();
+        parser.removeAndPrintNodes();
+    }
+    //Refactoring 2: Extract method
+    private void parseAndPrintGraph(String filepath) throws FileNotFoundException {
+        parseGraph(filepath);
+        System.out.println(toString());
+    }
+    //Refactoring 2: Extract Method
+    private void addAndPrintNodes() {
+        addNode("firstSourceNode");
+        addNode("firstDestNode");
+        addEdge("firstSourceNode", "firstDestNode");
+        System.out.println(toString());
+    }
+    //Refactoring 2: Extract Method
+    private void removeAndPrintNodes() {
+        removeEdge("firstSourceNode", "firstDestNode");
+        removeNode("firstSourceNode");
+        removeNode("firstDestNode");
+        System.out.println(toString());
+    }
+    //Refactoring 2: Extract Method
+    private void exportGraphs() throws FileNotFoundException {
+        outputGraph("output_updated1.dot");
+        outputGraph("output_removed1.dot");
+        outputDOTGraph("outputDOTGraph.dot");
+        outputGraphics("outputpngGraph", "PNG");
     }
 }
