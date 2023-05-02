@@ -21,8 +21,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.*;
 
 // Refactoring 3: Replace Conditional with Polymorphism
 // Command line file path handler implementation
@@ -78,6 +80,17 @@ public class GraphParser {
         importer.importGraph(this.graph, new File(filepath));
 
     }
+
+    public List<String> performBFS(String startNode) {
+        BFS bfs = new BFS(graph);
+        return bfs.search(startNode);
+    }
+
+    public List<String> performDFS(String startNode) {
+        DFS dfs = new DFS(graph);
+        return dfs.search(startNode);
+    }
+
 
 
     // Extract method refactoring
