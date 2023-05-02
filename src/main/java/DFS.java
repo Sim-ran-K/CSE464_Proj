@@ -8,14 +8,20 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
 
-public class DFS extends GraphSearch {
+public class DFS extends GraphSearch implements GraphSearchStrategy {
 
     private Stack<String> stack;
     private Set<String> visited;
     private List<String> searchResult;
 
-    public  DFS(Graph<String, DefaultEdge> graph) {
+    public DFS(Graph<String, DefaultEdge> graph) {
         super(graph);
+    }
+
+    @Override
+    public List<String> search(Graph<String, DefaultEdge> graph, String src, String dst) {
+        // Implement DFS logic and return the path between src and dst nodes
+        return performDFS(src, dst);
     }
 
     @Override

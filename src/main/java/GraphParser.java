@@ -218,12 +218,15 @@ public class GraphParser {
         }
     }
 
-
-
+        public List<String> graphSearch(String src, String dst, GraphSearchStrategy strategy)
+        {
+            return strategy.search(graph, src, dst);
+        }
 
     // Refactoring 3: Replace Conditional with Polymorphism
     // Instantiate the appropriate file path handler based on the length of the args array
     public static void main(String[] args) throws FileNotFoundException {
+
         FilePathHandler filePathHandler = (args.length > 1) ? new CommandLineFilePathHandler(args) : new DefaultFilePathHandler();
 
         String inFilepath = filePathHandler.getInputFilePath();

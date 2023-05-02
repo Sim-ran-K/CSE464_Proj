@@ -33,7 +33,7 @@ import java.io.Writer;
 import java.util.Scanner;
 import java.util.Set;
 
-public class BFS extends GraphSearch {
+public class BFS extends GraphSearch implements GraphSearchStrategy{
 
     private Queue<String> queue;
     private Set<String> visited;
@@ -42,6 +42,13 @@ public class BFS extends GraphSearch {
     public BFS (Graph<String, DefaultEdge> graph) {
         super(graph);
     }
+
+    @Override
+    public List<String> search(Graph<String, DefaultEdge> graph, String src, String dst) {
+        // Implement BFS logic and return the path between src and dst nodes
+        return performBFS(src, dst);
+    }
+    
 
     @Override
     protected void initializeSearch() {

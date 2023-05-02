@@ -5,6 +5,19 @@ import java.util.List;
 
 public abstract class GraphSearch {
     protected Graph<String, DefaultEdge> graph;
+    private GraphSearchStrategy searchStrategy;
+
+    public GraphSearch(GraphSearchStrategy searchStrategy) {
+        this.searchStrategy = searchStrategy;
+    }
+
+    public List<String> performBFS(String startNode, String endNode) {
+        return searchStrategy.search(graph, startNode, endNode);
+    }
+
+    public List<String> performDFS(String startNode, String endNode) {
+        return searchStrategy.search(graph, startNode, endNode);
+    }
 
     public GraphSearch(Graph<String, DefaultEdge> graph) {
         this.graph = graph;
